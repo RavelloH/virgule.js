@@ -1,3 +1,6 @@
+// Author:RavelloH
+// LICENCE: MIT
+// Repo src: github.com/RavelloH/virgule.js
 randArrMin = [
     "A",
     "B",
