@@ -37,7 +37,7 @@ randArrMin = [
     "6",
     "7",
     "8",
-    "9"
+    "9",
 ];
 randArr = [
     "あ",
@@ -264,107 +264,99 @@ randArr = [
     "壬",
     "癸",
 ];
-function virgule(target, context, speed = 100) {
-    //context重组
-    contextArr = [];
-    for (var i = 0; i < context.length; i++) {
-        contextArr.push(context[i])
+
+function virgule(context) {
+    let result = []
+
+    // context重组
+    let contextArr = [];
+    for (let i = 0; i < context.length; i++) {
+        contextArr.push(context[i]);
     }
-    // 添加/
-    target.innerHTML = "";
-    numVirgule = 0
-    var virgulegenerate = setInterval(
-        function() {
-            // 字符划分
-            if (escape(contextArr[numVirgule]).indexOf("%u") < 0) {
-                if (contextArr[numVirgule] == ' ') {
-                    target.innerHTML += ' '
+
+    // 添加virgule
+    let numVirgule = 0;
+    let text = ''
+
+    while (numVirgule < context.length) {
+        if (escape(contextArr[numVirgule]).indexOf("%u") < 0) {
+            if (contextArr[numVirgule] == " ") {
+                text += " ";
+            } else {
+                text += "/";
+            }
+        } else {
+            text += "//";
+        }
+        numVirgule ++
+        result.push(text)
+    }
+
+    // 随机文字进入
+
+    let numIn = 0;
+    let numCharacter = 0;
+
+    let originText = result[result.length-1]
+    let cacheText
+    while (numIn < contextArr.length) {
+        numIn ++;
+        cacheText = "";
+        numCharacter = 0;
+        for (i = 0; i < numIn; i++) {
+            if (escape(contextArr[i]).indexOf("%u") < 0) {
+                if (contextArr[i] == " ") {
+                    cacheText += " ";
+                    numCharacter += 1;
                 } else {
-                    target.innerHTML += '/'
+                    //单字符
+                    let rand = Math.floor(Math.random() * randArrMin.length);
+                    cacheText += randArrMin[rand];
+                    numCharacter += 1;
                 }
             } else {
-                target.innerHTML += '//'
+                // 双字符
+                let rand = Math.floor(Math.random() * randArr.length);
+                cacheText += randArr[rand];
+                numCharacter += 2;
             }
-            numVirgule += 1
-            if (numVirgule > context.length) {
-                clearInterval(virgulegenerate);
-                target.innerHTML = target.innerHTML.slice(0, target.innerHTML.length-1)
-                setTimeout(function() {
-                    textIn()}, 100)
-            }
-        },
-        1000/speed)
-
-    // 文字进入
-    numIn = 0;
-    numCharacter = 0;
-    function textIn() {
-        originText = target.innerHTML;
-        var virgulereplace = setInterval(
-            function() {
-                numIn += 1
-                if (numIn >= contextArr.length) {
-                    clearInterval(virgulereplace)
-                    textwrite()
-                }
-                cacheText = ''
-                numCharacter = 0
-                for (i = 0; i < numIn; i++) {
-                    if (escape(contextArr[i]).indexOf("%u") < 0) {
-                        if (contextArr[i] == ' ') {
-                            cacheText += ' '
-                            numCharacter += 1
-                        } else {
-                            //单字符
-                            var rand = Math.floor(Math.random() * randArrMin.length);
-                            cacheText += randArrMin[rand]
-                            numCharacter += 1
-                        }
-                    } else {
-                        // 双字符
-                        var rand = Math.floor(Math.random() * randArr.length);
-                        cacheText += randArr[rand]
-                        numCharacter += 2
-                    }
-                }
-                target.innerHTML = cacheText + originText.slice(numCharacter, originText.length)
-            },
-            2000/speed)
-
-        // 原始文字写入
-        numWrite = 0
-        function textwrite() {
-            originText = target.innerHTML;
-            var virgulewrite = setInterval(
-                function() {
-                    numWrite += 1
-                    if (numWrite >= contextArr.length) {
-                        clearInterval(virgulewrite)
-                    }
-                    cacheText = ''
-                    numCharacter = 0
-                    for (i = 0; i < numIn; i++) {
-                        if (escape(contextArr[i]).indexOf("%u") < 0) {
-                            if (contextArr[i] == ' ') {
-                                cacheText += ' '
-                                numCharacter += 1
-                            } else {
-                                //单字符
-                                var rand = Math.floor(Math.random() * randArrMin.length);
-                                cacheText += randArrMin[rand]
-                                numCharacter += 1
-                            }
-                        } else {
-                            // 双字符
-                            var rand = Math.floor(Math.random() * randArr.length);
-                            cacheText += randArr[rand]
-                            numCharacter += 2
-                        }
-                    }
-                    target.innerHTML = context.slice(0, numWrite) + cacheText.slice(numWrite, cacheText.length) + originText.slice(numCharacter, originText.length)
-                },
-                2000/speed)
-
         }
+        result.push(cacheText + originText.slice(numCharacter, originText.length))
     }
+
+    // 原始文字写入
+    let numWrite = 0;
+    originText = result[result.length-1]
+    while (numWrite < contextArr.length) {
+        numWrite += 1;
+        cacheText = "";
+        numCharacter = 0;
+        for (i = 0; i < numIn; i++) {
+            if (escape(contextArr[i]).indexOf("%u") < 0) {
+                if (contextArr[i] == " ") {
+                    cacheText += " ";
+                    numCharacter += 1;
+                } else {
+                    //单字符
+                    let rand = Math.floor(Math.random() * randArrMin.length);
+                    cacheText += randArrMin[rand];
+                    numCharacter += 1;
+                }
+            } else {
+                // 双字符
+                let rand = Math.floor(Math.random() * randArr.length);
+                cacheText += randArr[rand];
+                numCharacter += 2;
+            }
+        }
+        result.push(
+            context.slice(0, numWrite) +
+            cacheText.slice(numWrite, cacheText.length) +
+            originText.slice(numCharacter, originText.length)
+        )
+    }
+    return result
 }
+
+
+module.exports = virgule

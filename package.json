@@ -1,0 +1,24 @@
+{
+  "name": "virgule-js",
+  "version": "2.0.0",
+  "description": "Generate cool virgule fade-in animations for a piece of text",
+  "main": "virgule.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RavelloH/virgule.js.git"
+  },
+  "keywords": [
+    "virgule",
+    "text",
+    "fade-in"
+  ],
+  "author": "RavelloH",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RavelloH/virgule.js/issues"
+  },
+  "homepage": "https://github.com/RavelloH/virgule.js#readme"
+}
