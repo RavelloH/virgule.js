@@ -1,8 +1,8 @@
 # virgule.js
 
-Generate cool virgule fade-in animations for a piece of text  
+Generate cool virgule fade-in animations for a piece of text
 
-为一段文本生成酷炫的斜杠淡入动画  
+为一段文本生成酷炫的斜杠淡入动画
 
 ## Usage
 
@@ -11,11 +11,11 @@ npm i virgule-js
 ```
 
 ```javascript
-const virgule = require('virgule-js')
+const virgule = require("virgule-js");
 
 let virguleList = virgule(text);
 
-// return: a list 
+// return: a list
 /*
 eg: Hello World! => 
 [
@@ -38,19 +38,25 @@ eg: Hello World! =>
 ## Example
 
 ```javascript
-const text = 'Generate cool virgule fade-in animations for a piece of text'
-const num = 10
+const text = "Generate cool virgule fade-in animations for a piece of text";
+const num = 10;
 
-const virglueText = virgule(text,num)
+const virglueText = virgule(text, num);
 
-let i = 0
+let i = 0;
 
-let timer = setInterval(()=>{
-    process.stdout.write(virglueText[i]+'\r')
-    i++
-    if (i >= virglueText.length) {
-        console.log(virglueText.pop())
-        clearInterval(timer)
-    }
-},25)
+let timer = setInterval(() => {
+  process.stdout.write(virglueText[i] + "\r");
+  i++;
+  if (i >= virglueText.length) {
+    console.log(virglueText.pop());
+    clearInterval(timer);
+  }
+}, 25);
+```
+
+## Minify
+
+```
+npm run minify
 ```
