@@ -37,6 +37,8 @@ eg: Hello World! =>
 
 ## Example
 
+### Nodejs
+
 ```javascript
 const text = "Generate cool virgule fade-in animations for a piece of text";
 const num = 10;
@@ -53,6 +55,23 @@ let timer = setInterval(() => {
     clearInterval(timer);
   }
 }, 25);
+```
+
+### Frontend
+
+```javascript
+async function virgule(element, text, interval) {
+    let vir = (await import('virgule-js')).default;
+    let targetList = vir(text);
+    let doneTime = 0;
+    let virguleTimer = setInterval(() => {
+        doneTime++;
+        element.innerHTML = targetList[doneTime - 1];
+        if (doneTime == targetList.length) {
+            clearInterval(virguleTimer);
+        }
+    }, interval);
+}
 ```
 
 ## Minify
