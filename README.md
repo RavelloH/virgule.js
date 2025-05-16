@@ -74,6 +74,71 @@ async function virgule(element, text, interval) {
 }
 ```
 
+### React(Nextjs)
+
+```javascript
+// @/components/Virgule.jsx
+'use client';
+
+import React, { useEffect, useRef } from 'react';
+
+const Virgule = ({ text, interval = 20, inline = false, timeout }) => {
+    const elementRef = useRef(null);
+
+    useEffect(() => {
+        const loadVirgule = async () => {
+            let vir = (await import('virgule-js')).default;
+            let targetList = vir(text);
+            let doneTime = 0;
+            let virguleTimer = setInterval(() => {
+                doneTime++;
+                if (elementRef.current) {
+                    elementRef.current.innerHTML = targetList[doneTime - 1];
+                }
+                if (doneTime === targetList.length) {
+                    clearInterval(virguleTimer);
+                }
+            }, interval);
+        };
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                if (entries[0].isIntersecting) {
+                    setTimeout(() => {
+                        loadVirgule();
+                    }, timeout);
+                    observer.disconnect();
+                }
+            },
+            { threshold: 0.1 },
+        );
+
+        if (elementRef.current) {
+            observer.observe(elementRef.current);
+        }
+
+        return () => {
+            observer.disconnect();
+        };
+    }, [text, interval, inline, timeout]);
+
+    return inline ? <span ref={elementRef}>/</span> : <div ref={elementRef}>/</div>;
+};
+
+export default Virgule;
+```
+
+```javascript
+import Virgule from '@/components/Virgule';
+
+<Virgule text={'Hello World'} interval={20} timeout={1500} inline={false}/>
+
+// text: 显示的文字
+// interval: 每个文字显示的时间
+// timeout：用户看到此元素几毫秒后开始动画
+// inline: 是否为行内元素，true为span，false为div
+```
+
 ## Minify
 
 ```
